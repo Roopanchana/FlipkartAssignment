@@ -6,40 +6,13 @@
   </listeners>
   <test parallel="tests" name="Test(failed)">
     <classes>
-      <class name="com.flipcart.qa.testcases.PaymentPageTest">
-        <methods>
-          <include name="invalid"/>
-          <include name="tearDown"/>
-          <include name="payment"/>
-          <include name="setUp"/>
-        </methods>
-      </class> <!-- com.flipcart.qa.testcases.PaymentPageTest -->
-      <class name="com.flipcart.qa.testcases.LoginPageTest">
-        <methods>
-          <include name="tearDown"/>
-          <include name="setUp"/>
-          <include name="loginTest"/>
-        </methods>
-      </class> <!-- com.flipcart.qa.testcases.LoginPageTest -->
       <class name="com.flipcart.qa.testcases.HomePageTest">
         <methods>
           <include name="veifyUserNameTest"/>
           <include name="tearDown"/>
-          <include name="searchElement"/>
           <include name="setUp"/>
-          <include name="verifyPageTitleTest"/>
         </methods>
       </class> <!-- com.flipcart.qa.testcases.HomePageTest -->
-      <class name="com.flipcart.qa.testcases.ProductPageTest">
-        <methods>
-          <include name="searchElement"/>
-          <include name="tearDown"/>
-          <include name="veifyUserNameTest"/>
-          <include name="setUp"/>
-          <include name="verifyProductNameTest"/>
-          <include name="verifyProductPrice"/>
-        </methods>
-      </class> <!-- com.flipcart.qa.testcases.ProductPageTest -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite] -->

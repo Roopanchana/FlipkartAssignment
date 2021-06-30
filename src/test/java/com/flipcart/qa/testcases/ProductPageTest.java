@@ -1,10 +1,14 @@
 package com.flipcart.qa.testcases;
 
+
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.flipcart.qa.pages.HomePage;
@@ -12,6 +16,9 @@ import com.flipcart.qa.pages.LoginPage;
 import com.flipcart.qa.pages.PaymentPage;
 import com.flipcart.qa.pages.ProductPage;
 import com.flipkart.qa.base.TestBase;
+import com.flipkart.qa.util.ExcelUtil;
+
+
 
 public class ProductPageTest extends TestBase {
 	
@@ -19,15 +26,19 @@ public class ProductPageTest extends TestBase {
 	HomePage homePage;
 	ProductPage productPage;
 	PaymentPage paymentPage;
-	
-	
-	
+
+
+
+
+
 	public ProductPageTest()
 	{
 		super();
 	}
-	
-	@BeforeTest
+
+
+
+	@BeforeMethod
 	public void setUp() throws InterruptedException
 	{
 		initialization();
@@ -37,62 +48,94 @@ public class ProductPageTest extends TestBase {
 		loginPage= new LoginPage();
 		loginPage.login(prop.getProperty("username"),prop.getProperty("password"));
 		Thread.sleep(5000);
-		homePage.searchElement("APPLE iPhone 11 ");
-		ArrayList<String> newTb = new ArrayList<String>(driver.getWindowHandles());
-        driver.switchTo().window(newTb.get(1));
+		//homePage.searchProduct("Refrigerator");
+		Map<String, String> testData;
+		try {
+				testData = ExcelUtil.getMap();
+				productPage = homePage.searchProduct(testData.get("Product Name"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 	}
 	
-	
-	
+
+
+		ArrayList<String> newTb = new ArrayList<String>(driver.getWindowHandles());
+	    driver.switchTo().window(newTb.get(1));
+	}
+
+
+
+
+
 	@Test(priority=1)
 	public void veifyUserNameTest() throws InterruptedException
 	{
 		Thread.sleep(5000);
 		Assert.assertTrue(productPage.verefyCorrectUserName());
-		log.debug("Page Title Verification");
+		log.debug("User name verification");
 	}
-	
-	
-	
+
+
+
+
+
 	@Test(priority=2)
 	public void verifyProductNameTest() throws InterruptedException
 	{
 		Thread.sleep(5000);
-		Assert.assertFalse(productPage.verefyProductName());
-		log.debug("User Name Verification");
+		Assert.assertTrue(productPage.verefyProductName());
+		log.debug("Product name verification");
 	}
-	
-	
-	
+
+
+
+
+
 	@Test(priority=3)
-	public void verifyProductPrice() throws InterruptedException
+	public void verifyProductPrice() throws IOException
 	{
-		double expectedPrice = 14499.00;
-		
+
+		Map<String,String>testData = ExcelUtil.getMap();
+
+		String expectedPrice = productPage.verefyProductPrice(testData.get("Expected Price"));
+
+
 		double actualPrice = 14499.00;
-		
-		Thread.sleep(5000);
-		
-		Assert.assertEquals(expectedPrice, actualPrice);
-		System.out.println("Assert Passed");
-		log.debug("Price Comparison");
+
+
+
+		try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 	}
-	
-	
-	
+
+
+
+		Assert.assertNotEquals(expectedPrice, actualPrice);
+		System.out.println("Assert Passed");
+		log.debug("Price comparison");
+	}
+
+
+
+
+
 	@Test(priority=4)
-	public void searchElement() throws InterruptedException
+	public void productBuyNow() throws InterruptedException
 	{
 		Thread.sleep(5000);
 		paymentPage = productPage.productBuyNow();
-		log.debug("Entering Into PaymentPage");
-		
+		log.debug("Entering in to payment page");
 	}
-	
-	
-	
-	
-	@AfterTest
+
+
+
+
+
+	@AfterMethod
 	public void tearDown()
 	{
 		driver.quit();
